@@ -14,11 +14,17 @@ class BaseApi(object):
 		with open(cachepath + '/%s.json' % name, 'w', encoding = 'UTF-8') as f:
 			json.dump(data, f, sort_keys = False, indent = 2, ensure_ascii = False)
 
-	def apiOperate(self, api,config,**params):
-		param = { 'per_page': config['per_page'], 'sort': 'asc' ,'order_by': 'id'}
-		param.update(params)
-		print(param)
-		resp = requests.get(api % config['address'],
-			headers = config['headers'], params = param)
+	def apiOperate(self, methods, api, config, **paramdata):
+		if methods == 'get' or methods == 'GET':
+			param = { 'per_page': config['per_page'], 'sort': 'asc' ,'order_by': 'id'}
+			param.update(paramdata)
+			#print(param)
+			resp = requests.request( method = methods, url = api % config['address'],
+				headers = config['headers'], params = param)
+		elif methods == 'post' or methods == 'POST':
+			resp = requests.request( method = methods, url = api % config['address'],
+				headers = config['headers'], data = paramdata)
+		else:
+			return "method Error"	
 
 		return resp
