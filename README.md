@@ -12,9 +12,9 @@ API参考：
 
 优化：
 - 迁移创建Users、Groups、Group-members、Projects、Repositories进行是否存在判定
-- 查询project增加了翻页支持（默认单页最大显示100）
+- 查询增加了翻页支持（默认单页最大显示100）
 - 修改部分代码逻辑
-
+- 新用户默认密码：hellouser
 ## 环境依赖
 `python 3`
 `$ pip install -r requirements.txt`
