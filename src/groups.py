@@ -7,8 +7,8 @@ class Groups(BaseApi):
 		super().__init__(cfg)
 		self.api = 'http://%s/api/v4/groups'
 
-	def run(self, resname):
-		super().run(resname)
+	#def run(self):
+	#	super().run()
 
 	def inserts(self, source):
 		new_res = []

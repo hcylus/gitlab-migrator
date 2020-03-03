@@ -3,14 +3,14 @@
 from base import BaseApi
 
 class Users(BaseApi):
-	def __init__(self, cnf):
-		#super(Users, self).__init__(cnf)
-		super().__init__(cnf)
+	def __init__(self, cfg):
+		#super(Users, self).__init__(cfg)
+		super().__init__(cfg)
 		self.api = 'http://%s/api/v4/users'
 
 
-	def run(self, resname):
-		super().run(resname)
+	#def run(self):
+	#	super().run()
 
 	def inserts(self, source):
 		new_res = []

@@ -67,7 +67,8 @@ class BaseApi(object):
 	def inserts(self, source):
 		pass	
 
-	def run(self, resname):
+	def run(self):
+		resname = (self.api).split('/')[-1]
 		source = self.listResInfo(resname)
 		target = self.inserts(source)
 		resp = { 'source': source, 'target': target }
