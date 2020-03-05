@@ -34,13 +34,25 @@ class BaseApi(object):
 		elif methods == 'post' or methods == 'POST':
 			resp = requests.request( method = methods, url = api % config['address'],
 				headers = config['headers'], data = paramdata)
+		elif methods == 'delete' or methods == 'DELETE':
+			param = {}
+			param.update(paramdata)
+			#print(param)
+			print(api % config['address'])
+			resp = requests.request( method = methods, url = api % config['address'],
+				headers = config['headers'], params = param)
 		else:
 			return "method Error"	
 
 		return resp
 
-	def listResInfo(self, resname):
-		pre_resp = self.apiOperate('get', self.api, self.source, page=1)
+	#默认list source资源
+	def listResInfo(self, resname, url=None, rescfg=None):
+		if rescfg is None:
+			rescfg =  self.source
+		if url is None:
+			url =  self.api
+		pre_resp = self.apiOperate('get', url, rescfg, page=1)
 		total = pre_resp.headers['X-Total']
 		page = int(pre_resp.headers['X-Total-Pages'])
 		print(' %s total %d page' % (resname, page))
@@ -54,13 +66,13 @@ class BaseApi(object):
 				[ 'page={}'.format(x) for x in range(1,page+1) ] ))))
 			'''
 			# 实现http翻页，处理总条目数超过单页默认显示最大值
-			apiOperate = partial(self.apiOperate, 'get', self.api, self.source)
+			apiOperate = partial(self.apiOperate, 'get', url, rescfg)
 			resp = list(map(lambda x:x.json(), list(apiOperate(**{'page':x}) for x in range(1,page+1))))			
 			res = list(chain(*resp))
 		else:
 			res = pre_resp.json()
 
-		print(' Source total %s %s ' % ( total, resname))
+		print(' Total %s %s ' % ( total, resname))
 
 		return res	
 
@@ -74,3 +86,19 @@ class BaseApi(object):
 		resp = { 'source': source, 'target': target }
 		self.cache(resname, resp)
 		return resp
+
+	#默认remove target资源
+	def remove(self, resname, rescfg=None):
+		if rescfg is None:
+			rescfg =  self.target
+		url = self.api +'/%s' % resname
+		source = self.listResInfo(resname, url, self.target)
+		for src in source:
+			durl = '%s/%s' % (url, src['id'])
+			if 'username' in src:
+				if src['username'] != 'root':
+					self.apiOperate('delete', durl, rescfg, hard_delete=True)
+					print('delete %s: ' % resname, src['username'])
+			else:
+				self.apiOperate('delete', durl, rescfg)
+				print('delete %s: ' % resname, src['name'])
