@@ -1,6 +1,6 @@
 # GitLab Community Edition数据迁移
 
-使用`gitlab-ce` API进行私有仓库数据迁移，从`11.1.4`迁至`12.7.5`。因版本不同，无法使用`gitlab-rake`工具进行`backup`/`restore`。
+使用`gitlab-ce` API进行私有仓库数据迁移，从`11.1.4`迁至`12.7.5`。因版本不同，无法使用`gitlab-rake`工具进行`backup`/`restore`
 
 API参考：
 - https://docs.gitlab.com/ee/api/README.html
@@ -15,6 +15,7 @@ API参考：
 - 查询增加了翻页支持（默认单页最大显示100）
 - 修改部分代码逻辑
 - 新用户默认密码：hellouser
+
 ## 环境依赖
 `python 3`
 `$ pip install -r requirements.txt`
@@ -36,15 +37,18 @@ API参考：
 - [X] Repositories
 - [ ] Issues
 - [ ] Merge requests
+- [ ] SSH key
+- [ ] Deploy Keys
 
 ## 用法
 
 - 迁移
 ``` sh
+$ cp src/config_example.py src/config.py
 $ python3 src/main.py
 ```
 
-- 清除测试目标库中的数据
+- 清除目标库中的数据
 ``` sh
 $ python3 src/clean.py
 ```
