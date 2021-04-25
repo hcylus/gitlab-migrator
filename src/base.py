@@ -15,6 +15,7 @@ class BaseApi(object):
 		self.api = 'http://%s/api/v4'
 		self.source = cfg['source']
 		self.target = cfg['target']
+		self.rsync=cfg['rsync']
 
 	def cache(self, name, data):
 		cachepath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'cache')
@@ -82,7 +83,10 @@ class BaseApi(object):
 	def run(self):
 		resname = (self.api).split('/')[-1]
 		source = self.listResInfo(resname)
-		target = self.inserts(source)
+		if self.rsync:
+			target = self.inserts(source)
+		else:
+			target=[]
 		resp = { 'source': source, 'target': target }
 		self.cache(resname, resp)
 		return resp

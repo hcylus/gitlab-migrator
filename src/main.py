@@ -9,7 +9,7 @@ from repositories import Repositories
 from clean import Clean
 
 def execute(cfg):
-	#cachepath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'cache')
+	# cachepath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'cache')
 	
 	users = Users(cfg).run()
 	#with open(cachepath + '/users.json','r') as f:
@@ -22,8 +22,8 @@ def execute(cfg):
 	members = GroupsMembers(cfg, users, groups).run()
 	
 	projects = Projects(cfg, users, groups).run()
-	#with open( cachepath + '/projects.json','r') as f:
-	#	projects = json.load(f)
+	# with open( cachepath + '/projects.json','r') as f:
+	# 	projects = json.load(f)
 
 	Repositories(cfg, projects).run()
 
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 		cfg[key]['per_page'] = 100
 		#print('%s:' % key)
 		#print(cfg[key])
-
+	cfg['rsync']=config.rsync
 	# Clean(cfg)用于清理target端user、group、project谨慎启用	
 	#Clean(cfg)
 
